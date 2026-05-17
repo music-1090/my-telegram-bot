@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programmed Love - Corazón Real</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .container {
+            position: relative;
+            transform-style: preserve-3d;
+            width: 100%;
+            height: 100%;
+        }
+
+        .ui_love_word {
+            color: #ea86b6;
+            font-size: 0.8rem; /* ဖုန်းအတွက် စာလုံးအရွယ်အစား လျှော့ထားပါတယ် */
+            font-family: Arial, sans-serif;
+            position: absolute;
+            text-shadow: 0 0 10px #ffb3d9;
+            white-space: nowrap;
+            opacity: 0;
+            animation: heart-anim 4s infinite linear;
+        }
+
+        @keyframes heart-anim {
+            0% {
+                opacity: 0;
+                transform: translate3d(var(--x), var(--y), 0) scale(0.8);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(var(--x), calc(var(--y) - 50px), 50px) scale(1.1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="heart-container"></div>
+
+    <script>
+        const container = document.getElementById('heart-container');
+        const totalWords = 120; // ဖုန်းမှာ အရမ်းမကျပ်အောင် အရေအတွက် နည်းနည်းလျှော့ထားပါတယ်
+
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        // ဖုန်းလား ကွန်ပျူတာလား စစ်ဆေးတာပါ
+        const isMobile = window.innerWidth < 600;
+        const sizeFactor = isMobile ? 8 : 15; // ဖုန်းဆိုရင် ပုံစံကို သေးပေးလိုက်ပါတယ်
+
+        for (let i = 0; i < totalWords; i++) {
+            const word = document.createElement('div');
+            word.className = 'ui_love_word';
+            word.innerText = 'HAN THAR'; // နာမည် ပြင်ဆင်ပြီး
+
+            const angle = (i / totalWords) * Math.PI * 2;
+            
+            const x = 16 * Math.pow(Math.sin(angle), 3);
+            const y = 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
+
+            const scaleX = x * sizeFactor; 
+            const scaleY = -y * sizeFactor;
+
+            // စာသားအလျားလိုက် အလယ်တည့်တည့်ဖြစ်အောင် offset ညှိတာပါ
+            const offset = isMobile ? 25 : 40;
+            const posX = centerX + scaleX - offset; 
+            const posY = centerY + scaleY;
+
+            word.style.setProperty('--x', `${posX}px`);
+            word.style.setProperty('--y', `${posY}px`);
+            word.style.animationDelay = `${Math.random() * 4}s`;
+
+            container.appendChild(word);
+        }
+    </script>
+</body>
+</html>
