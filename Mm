@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Wish - Yukisozan</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            perspective: 1000px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            position: relative;
+            transform-style: preserve-3d;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* အလယ်က နာမည်အတွက် Style */
+        .center-name {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff0077, 0 0 20px #ff0077;
+            z-index: 10;
+            white-space: nowrap;
+            letter-spacing: 2px;
+        }
+
+        .ui_love_word {
+            color: #ea86b6;
+            font-size: 0.7rem; /* ဖုန်းအတွက် အရွယ်အစား ညှိထားခြင်း */
+            position: absolute;
+            text-shadow: 0 0 8px #ffb3d9;
+            white-space: nowrap;
+            opacity: 0;
+            animation: heart-anim 4s infinite linear;
+        }
+
+        @keyframes heart-anim {
+            0% {
+                opacity: 0;
+                transform: translate3d(var(--x), var(--y), 0) scale(0.8);
+            }
+            15% {
+                opacity: 1;
+            }
+            85% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate3d(var(--x), calc(var(--y) - 30px), 30px) scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="heart-container">
+        <!-- အလယ်က နာမည် -->
+        <div class="center-name">𝐘𝐮𝐤𝐢𝐬𝐨𝐳𝐚𝐧</div>
+    </div>
+
+    <script>
+        const container = document.getElementById('heart-container');
+        const totalWords = 100; // ဖုန်းမှာ ပိုကြည်လင်အောင် အရေအတွက်ကို ညှိထားပါတယ်
+
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        const isMobile = window.innerWidth < 600;
+        const sizeFactor = isMobile ? 7 : 13; // နှလုံးသားအရွယ်အစားကို ဖုန်းနဲ့အဆင်ပြေအောင် ညှိခြင်း
+
+        for (let i = 0; i < totalWords; i++) {
+            const word = document.createElement('div');
+            word.className = 'ui_love_word';
+            word.innerText = 'Happy Birthday'; // စာသားပြောင်းလဲခြင်း
+
+            const angle = (i / totalWords) * Math.PI * 2;
+            
+            // Heart Curve Equation
+            const x = 16 * Math.pow(Math.sin(angle), 3);
+            const y = 13 * Math.cos(angle) - 5 * Math.cos(2 * angle) - 2 * Math.cos(3 * angle) - Math.cos(4 * angle);
+
+            const scaleX = x * sizeFactor; 
+            const scaleY = -y * sizeFactor;
+
+            // စာသားတွေ အလယ်တည့်အောင် offset တွက်ချက်ခြင်း
+            const posX = centerX + scaleX; 
+            const posY = centerY + scaleY;
+
+            word.style.left = `0px`;
+            word.style.top = `0px`;
+            
+            // စာသားကိုယ်တိုင်ရဲ့ အလယ်ဗဟိုကို ညှိဖို့ transform သုံးပါတယ်
+            word.style.setProperty('--x', `${posX - 40}px`); 
+            word.style.setProperty('--y', `${posY}px`);
+            
+            word.style.animationDelay = `${Math.random() * 4}s`;
+
+            container.appendChild(word);
+        }
+    </script>
+</body>
+</html>
